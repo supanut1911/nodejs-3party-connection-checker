@@ -8,8 +8,14 @@ const app = express()
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
-  res.send({
+  res.status(200).json({
     msg: 'server is running',
+  })
+})
+
+app.get('/health', (req, res) => {
+  res.status(200).json({
+    status: "up"
   })
 })
 
