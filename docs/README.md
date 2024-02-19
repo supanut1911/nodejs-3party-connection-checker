@@ -5,7 +5,7 @@
 ### use ages
 1. To check connection to MongoDB Atlas via 
 ```
-[POST] {{baseurl}}/check-redis-connection
+[POST] {{baseurl}}/check-mongo-connection
 
 body: 
 {
