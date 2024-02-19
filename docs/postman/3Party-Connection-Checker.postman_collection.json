@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "0ac5fc7e-a84b-4d63-8c36-556bb20c2efa",
+		"name": "3Party-Connection-Checker",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "32957995"
+	},
+	"item": [
+		{
+			"name": "Check MognoDB connection",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", () => {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Response doesn't have error\", () => {",
+							"    pm.response.to.not.have.jsonBody(\"error\")",
+							"})",
+							"",
+							"pm.test(\"Should get status from request\", () => {",
+							"    var jsonData = pm.response.json()",
+							"    pm.expect(jsonData.status).not.equal(\"Error connecting to MongoDB\")",
+							"})",
+							"",
+							"",
+							"",
+							"",
+							"// pm.test(\"Error with Case IP not whitelist\", () => {",
+							"//     var jsonData = pm.response.json()",
+							"//     if(!jsonData.error.reason) {",
+							"//        pm.expect(false).to.be.true",
+							"//     } else {",
+							"//         pm.expect(jsonData.error.reason[\"type\"]).equal(\"ReplicaSetNoPrimary\")",
+							"//     }",
+							"// })",
+							"",
+							"// pm.test(\"Error with Case Wrong MongoUrl Credential\", () => {",
+							"//     var jsonData = pm.response.json()",
+							"//     pm.expect(jsonData.error.code).equal(\"ENOTFOUND\")",
+							"// })"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"mongourl\": \"mongodb+srv://nutx:Nut11740X@cluster0.1vuxpfr.mongodb.net/?retryWrites=true&w=majority\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/checker/check-mongo-conntection",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"checker",
+						"check-mongo-conntection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Check Redis connection",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function() {",
+							"    pm.response.to.have.status(200)",
+							"})",
+							"",
+							"pm.test(\"Response doesn't have error\", () => {",
+							"    pm.response.to.not.have.jsonBody(\"error\")",
+							"})",
+							"",
+							"pm.test(\"Should get status from request\", () => {",
+							"    var jsonData = pm.response.json()",
+							"    pm.expect(jsonData.status).to.not.equal(\"Error connecting to Redis\")",
+							"})",
+							"",
+							"",
+							"// pm.test(\"Error with Case Wrong RedisUrl Credential\", () => {",
+							"//     var jsonData = pm.response.json()",
+							"//     pm.expect(jsonData.error).equal({})",
+							"// })"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"redisUrl\": \"redis://default:a40hrDz8ThTTPuivP4TwTp6fBbGvbF7g@redis-13228.c295.ap-southeast-1-1.ec2.cloud.redislabs.com:13228\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/checker/check-redis-connection",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"checker",
+						"check-redis-connection"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
