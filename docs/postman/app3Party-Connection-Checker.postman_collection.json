@@ -52,7 +52,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"mongourl\": \"mongodb+srv://nutx:Nut11740X@cluster0.1vuxpfr.mongodb.net/?retryWrites=true&w=majority\"\n}",
+					"raw": "{\n    \"mongourl\": \"\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -107,7 +107,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"redisUrl\": \"redis://default:a40hrDz8ThTTPuivP4TwTp6fBbGvbF7g@redis-13228.c295.ap-southeast-1-1.ec2.cloud.redislabs.com:13228\"\n}",
+					"raw": "{\n    \"redisUrl\": \"\"\n}",
 					"options": {
 						"raw": {
 							"language": "json"
