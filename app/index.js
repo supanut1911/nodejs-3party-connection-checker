@@ -1,8 +1,10 @@
 
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const redis = require('redis')
+const {Client} = require('@elastic/elasticsearch')
+
 const express = require('express')
 const bodyParser = require('body-parser');
-const redis = require('redis')
 const app = express()
 
 app.use(bodyParser.json());
@@ -73,6 +75,40 @@ app.post('/check-mongo-conntection', async (req, res) => {
   }
 })
 
-app.listen(4455, () => {
-  console.log('app is running on 4455')
+app.post('/check-elasticsearch-connection', async (req, res) => {
+  const {elasticsearchEndpoint, username, password} = req.body
+  const elasticsearchClient = new Client({ 
+    node: elasticsearchEndpoint,
+    auth: {
+      username,
+      password,
+    }
+  })
+  try {
+    const response = await elasticsearchClient.ping()
+    if(response) {
+      res.status(200).json({
+        status: "Can connect to Elasticsearch",
+      })
+    }
+    else {
+      console.log(response);
+      res.status(400).json({
+        status: "Can not connect to Elasticsearch",
+        error: "The Elasticsearch endpoint may be wrong"
+      })
+    }
+  } catch (error) {
+    console.log({error});
+    res.status(500).json({
+      status: 'Error while connecting to Elasticsearch',
+      error
+    });
+  } finally {
+
+  }
+})
+
+app.listen(5555, () => {
+  console.log('app is running on 5555')
 })
