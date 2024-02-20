@@ -21,6 +21,30 @@ app.get('/health', (req, res) => {
   })
 })
 
+app.post('/check-redis-connection-local', async(req, res) => {
+  const redisClient = redis.createClient({
+    host: 'redis',
+    password: 'redisp4ss'
+  })
+
+  try {
+    await redisClient.connect()
+    await redisClient.ping();
+    res.status(200).json({
+      status: "Can connect to Redis"
+    })
+  } catch (error) {
+    res.status(500).json({
+      status: 'Error connecting to Redis',
+      error
+    });
+  } finally {
+    if(redisClient) {
+      redisClient.quit()
+    }
+  }
+})
+
 app.post('/check-redis-connection', async (req, res) => {
   const {redisUrl} = req.body
   const redisClient = redis.createClient({
@@ -33,7 +57,6 @@ app.post('/check-redis-connection', async (req, res) => {
       status: "Can connect to Redis"
     })
   } catch (error) {
-    console.log({error});
     res.status(500).json({
       status: 'Error connecting to Redis',
       error
@@ -77,13 +100,15 @@ app.post('/check-mongo-conntection', async (req, res) => {
 
 app.post('/check-elasticsearch-connection', async (req, res) => {
   const {elasticsearchEndpoint, username, password} = req.body
-  const elasticsearchClient = new Client({ 
+  let elasticsearchClient
+  elasticsearchClient = new Client({ 
     node: elasticsearchEndpoint,
     auth: {
       username,
       password,
     }
   })
+
   try {
     const response = await elasticsearchClient.ping()
     if(response) {
@@ -92,23 +117,23 @@ app.post('/check-elasticsearch-connection', async (req, res) => {
       })
     }
     else {
-      console.log(response);
       res.status(400).json({
         status: "Can not connect to Elasticsearch",
-        error: "The Elasticsearch endpoint may be wrong"
+        error: "Your Elasticsearch endpoint is wrong, please check it."
       })
     }
   } catch (error) {
-    console.log({error});
+    let errormsg = ''
+    if (error.meta.statusCode === 401) {
+      errormsg = "Your Elasticsearch credential is wrong, please check it."
+    }
     res.status(500).json({
       status: 'Error while connecting to Elasticsearch',
-      error
+      error: errormsg ? errormsg : error
     });
-  } finally {
-
   }
 })
 
-app.listen(5555, () => {
-  console.log('app is running on 5555')
+app.listen(4455, () => {
+  console.log('app is running on 4455')
 })
